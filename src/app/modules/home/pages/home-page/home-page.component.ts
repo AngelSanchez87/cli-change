@@ -8,43 +8,51 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit {
-  currentItem = 0;
-  items = document.querySelectorAll('.carousel-item');
-  totalItems = this.items.length;
+  slider: any
+  sobreslider: any
+  defaultTransform: any
+  sliderfinal: boolean = false
+   goNext() {
 
+debugger
+
+    if (this.sliderfinal) {
+      this.defaultTransform = 0
+      this.sliderfinal = false
+    }
+    else {
+      if ((this.slider.scrollWidth - Math.abs(this.defaultTransform - 398)) > this.sobreslider.offsetWidth) {
+        this.defaultTransform = this.defaultTransform - 398
+        this.sliderfinal = false
+      } else {
+        this.defaultTransform = this.defaultTransform - (this.slider.scrollWidth - this.sobreslider.offsetWidth - Math.abs(this.defaultTransform))
+        this.sliderfinal = true
+      }
+    }
+
+
+
+    // this.defaultTransform = this.defaultTransform - 398;
+    // if (Math.abs(this.defaultTransform) >= (this.slider.scrollWidth / 1.7)) this.defaultTransform = 0;
+
+    this.slider.style.transform = "translateX(" + this.defaultTransform + "px)";
+  }
+  goPrev() {
+
+    if (Math.abs(this.defaultTransform) === 0 || this.sliderfinal) {
+      this.defaultTransform = 0
+      this.sliderfinal = false
+    }
+    else this.defaultTransform = this.defaultTransform + 398;
+    this.slider.style.transform = "translateX(" + this.defaultTransform + "px)";
+  }
 
   constructor() {
-    setInterval(() => this.nextItem(), 5000);
-
-
   }
 
   ngOnInit(): void {
-    setInterval(() => this.nextItem(), 5000);
-    }
-    showItem(index: number): void {
-      if (index < 0) {
-        this.currentItem = this.totalItems - 1;
-      } else if (index >= this.totalItems) {
-        this.currentItem = 0;
-      }
-
-      this.items.forEach((item: any, i: number) => {
-        if (i === this.currentItem) {
-          item.style.opacity = 1;
-        } else {
-          item.style.opacity = 0;
-        }
-      });
-    }
-
-    nextItem(): void {
-      this.currentItem++;
-      this.showItem(this.currentItem);
-    }
-
-    prevItem(): void {
-      this.currentItem--;
-      this.showItem(this.currentItem);
-    }
+    this.slider = document.getElementById("slider")
+    this.sobreslider = document.getElementById("sobreslider")
+    this.defaultTransform=0
+  }
 }
