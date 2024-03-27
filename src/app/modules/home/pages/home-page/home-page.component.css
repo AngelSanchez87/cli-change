@@ -1,0 +1,6 @@
+select {
+  background-image: url("../../../../../assets/arrow-down-svgrepo-com.svg");
+  appearance: none;
+  -webkit-appearance: none;
+  background-size: 18px;
+}
